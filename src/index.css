@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  --color-cream: #fff8ef;
+  --color-berry: #e0457b;
+  --color-berry-dark: #c22f61;
+  --color-plum: #3d1f3a;
+  --color-mint: #46c6a4;
+  --color-sunny: #ffc94a;
+  --color-sky: #6ec9e8;
+}
+
+body {
+  margin: 0;
+  background: var(--color-cream);
+  color: var(--color-plum);
+  -webkit-font-smoothing: antialiased;
+}
