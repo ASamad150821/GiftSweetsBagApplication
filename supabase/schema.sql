@@ -19,11 +19,14 @@ create table if not exists public.orders (
 -- so RLS is what stops a stranger from reading or editing everyone else's orders.
 alter table public.orders enable row level security;
 
--- Anyone using the site can create an order...
+-- Anyone using the site can create an order, whether they're a normal
+-- visitor (anon) or happen to be signed in as the admin (authenticated) —
+-- Supabase's client automatically uses whichever role is active, so both
+-- need permission or a signed-in admin's own checkout would be blocked.
 create policy "Anyone can place an order"
   on public.orders
   for insert
-  to anon
+  to anon, authenticated
   with check (true);
 
 -- ...but the public can't read, edit, or delete orders through the API.
