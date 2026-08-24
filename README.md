@@ -4,7 +4,7 @@ A small end-to-end storefront: customers order a "Sweet Surprise Gift Bag," and 
 
 ## Live demo
 
-_Add your deployed URL here once live._
+https://giftsweetbagapplication.vercel.app
 
 ## Tech stack
 
