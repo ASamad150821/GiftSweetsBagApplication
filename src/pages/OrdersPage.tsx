@@ -95,14 +95,18 @@ export function OrdersPage() {
                             </div>
                             <div className="flex justify-between gap-4">
                                 <dt>Bags</dt>
-                                <dd className="text-plum/90">{order.quantity} · £{order.total_price.toFixed(2)}</dd>
+                                <dd className="text-plum/90">{order.quantity}</dd>
                             </div>
-                            {order.personal_message && (
+                            <div className="flex justify-between gap-4">
+                                <dt>Price</dt>
+                                <dd className="text-plum/90">£{order.total_price.toFixed(2)}</dd>
+                            </div>
+                            {order.personal_message && 
                                 <div className="flex justify-between gap-4">
                                     <dt>Message</dt>
                                     <dd className="text-right text-plum/90">"{order.personal_message}"</dd>
                                 </div>
-                            )}
+                            }
                         </dl>
                     </div>
                 ))}

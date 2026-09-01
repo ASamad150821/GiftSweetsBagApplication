@@ -1,16 +1,16 @@
-import { useState, type FormEvent } from "react"
-import { useNavigate } from "react-router-dom"
-import { getSupabase } from "../lib/supabaseClient"
+import { useState, type ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { getSupabase } from "../lib/supabaseClient";
 
 export function LoginPage() {
 
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    async function handleSubmit(event: FormEvent) {
+    async function handleSubmit(event: ChangeEvent) {
         event.preventDefault();
         setError(null);
         setIsSubmitting(true);
@@ -40,7 +40,7 @@ export function LoginPage() {
 
                 <div>
                     <label className="block text-sm font-medium text-plum" htmlFor="password">Password</label>
-                    <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"></input>
+                    <input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"></input>
                 </div>
 
                 {error && <p className="text-sm text-berry" role="alert">{error}</p>}
@@ -51,4 +51,5 @@ export function LoginPage() {
             </form>
         </main>
     )
+
 }

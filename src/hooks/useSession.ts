@@ -11,15 +11,16 @@ export function useSession() {
 
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session)
-      setLoading(false)
+      setLoading(false);
     })
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, incomingSession) => {
+      setSession(incomingSession)
     })
 
-    return () => listener.subscription.unsubscribe()
-  }, [])
+    return () => listener.subscription.unsubscribe();
+  }, []);
 
   return { session, loading }
+
 }
