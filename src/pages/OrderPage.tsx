@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { PRICE_PER_BAG, useOrderStore } from "../store/orderStore";
-import { GiftBagIllustration } from "../components/GiftBagIllustration";
+import { GiftBagPicture } from "../components/GiftBagPicture";
 
 const MAX_MESSAGE_LENGTH = 120
 
@@ -22,7 +22,7 @@ export function OrderPage() {
         <main className="mx-auto max-w-4xl px-6 py-12">
             <div className="grid gap-10 sm:grid-cols-2 sm:items-center">
                 <div className="rounded-3xl bg-white p-6 shadow-sm">
-                    <GiftBagIllustration className="mx-auto h-auto w-full max-w-xs" />
+                    <GiftBagPicture className="mx-auto h-auto w-full max-w-xs" />
                 </div>
 
                 <div>

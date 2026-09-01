@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 const navItems = [
   { to: '/', label: 'Home', end: true },
   { to: '/order', label: 'Order', end: false },
-  { to: '/orders', label: 'View Orders', end: false },
+  { to: '/orders', label: 'View Orders - Super User Access Only', end: false },
 ]
 
 export function Header() {

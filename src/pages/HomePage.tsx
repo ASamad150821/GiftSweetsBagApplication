@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { GiftBagIllustration } from '../components/GiftBagIllustration'
+import { GiftBagPicture } from '../components/GiftBagPicture'
 import { PRICE_PER_BAG } from '../store/orderStore'
 import { FeatureCard } from '../components/FeatureCard';
 
@@ -11,7 +11,7 @@ export function HomePage() {
     <main className="mx-auto max-w-4xl px-6 py-12">
         <div className="grid gap-10 sm:grid-cols-2 sm:items-center">
             <div className="rounded-3xl bg-white p-6 shadow-sm">
-                <GiftBagIllustration className="mx-auto h-auto w-full max-w-xs"></GiftBagIllustration>
+                <GiftBagPicture className="mx-auto h-auto w-full max-w-xs"></GiftBagPicture>
             </div>
 
             <div>
