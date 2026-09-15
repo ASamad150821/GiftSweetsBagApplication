@@ -1,55 +1,87 @@
-import { useState, type ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { getSupabase } from "../lib/supabaseClient";
+import { useState, type FormEvent } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { ApiError } from '../lib/api'
+import { useAuthStore } from '../store/authStore'
 
 export function LoginPage() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const login = useAuthStore((state) => state.login)
 
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState<string | null>();
-    const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
 
-    async function handleSubmit(event: ChangeEvent) {
-        event.preventDefault();
-        setError(null);
-        setIsSubmitting(true);
-
-        const { error } = await getSupabase().auth.signInWithPassword({ email, password });
-
-        setIsSubmitting(false);
-
-        if (error) {
-            setError('Incorrect email or password.');
-            return;
-        }
-
-        navigate('/orders');
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+    setError(null)
+    setSubmitting(true)
+    try {
+      await login({ email, password })
+      const from = (location.state as { from?: string } | null)?.from ?? '/order'
+      navigate(from)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Something went wrong, please try again.')
+    } finally {
+      setSubmitting(false)
     }
+  }
 
-    return (
-        <main className="mx-auto max-w-md px-6 py-12">
-            <h1 className="text-3xl font-semibold text-plum">Sign in</h1>
-            <p className="mt-2 text-plum/60">Sign in to view orders placed through the site.</p>
+  return (
+    <main className="mx-auto max-w-md px-6 py-16">
+      <h1 className="text-3xl font-semibold text-plum">Log in</h1>
+      <p className="mt-2 text-plum/60">Log in to place an order and see your order history.</p>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-                <div>
-                    <label className="block text-sm font-medium text-plum" htmlFor="email">Email</label>
-                    <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"></input>
-                </div>
+      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-plum">
+            Email address
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+            className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-plum">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"
+          />
+        </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-plum" htmlFor="password">Password</label>
-                    <input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"></input>
-                </div>
+        {error && (
+          <p role="alert" className="text-sm text-berry-dark">
+            {error}
+          </p>
+        )}
 
-                {error && <p className="text-sm text-berry" role="alert">{error}</p>}
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full rounded-full bg-berry px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-berry-dark disabled:opacity-60"
+        >
+          {submitting ? 'Logging in…' : 'Log in'}
+        </button>
+      </form>
 
-                <button type="submit" disabled={isSubmitting} className="mt-2 w-full rounded-xl bg-berry px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-berry/80 disabled:cursor-not-allowed disabled:opacity-60">
-                    {isSubmitting ? 'Signing in…' : 'Sign in'}
-                </button>
-            </form>
-        </main>
-    )
-
+      <p className="mt-6 text-sm text-plum/60">
+        No account yet?{' '}
+        <Link to="/register" className="font-medium text-berry hover:underline">
+          Register
+        </Link>
+      </p>
+    </main>
+  )
 }

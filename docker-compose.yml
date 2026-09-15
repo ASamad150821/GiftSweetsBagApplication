@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: giftbags
+      POSTGRES_PASSWORD: giftbags
+      POSTGRES_DB: giftbags
+    ports:
+      - '5432:5432'
+    volumes:
+      - giftbags-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  giftbags-postgres-data:
