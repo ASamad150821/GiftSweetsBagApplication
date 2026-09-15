@@ -1,55 +1,52 @@
-# Sweet Bags — Gift Bag Ordering App
+# Sweet Bags
 
-A small end-to-end storefront: customers order a "Sweet Surprise Gift Bag," and every order is saved to a real database. Built as a portfolio project to demonstrate a full client → API → database flow with authentication and authorization.
+A storefront for a single product: the Sweet Surprise Gift Bag — a bag filled with a random
+assortment of sweets, finished with a personalised kind-message label.
 
-## Live demo
+## The user journey
 
-[giftsweetbagapplication.vercel.app](https://giftsweetbagapplication.vercel.app)
+1. **Register / log in** — an account is required to place an order
+2. **Product page** — pick a quantity, write a message for the label, see the live price
+3. **Checkout** — delivery details, validated with Zod, with an order summary
+4. **Confirmation** — a real, server-issued order reference
+5. **My Orders** — past orders, persisted in a real database
 
-## Tech stack
+Checkout is real: orders are validated, priced, and stored by a hand-written backend — no
+payment is taken, but nothing here is faked or mocked.
 
-- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, React Router, Zustand, Zod
-- **Backend:** [Supabase](https://supabase.com) — Postgres database, auto-generated REST API, and Auth, secured with Row Level Security
-- Postcode-to-town autofill via the free [postcodes.io](https://postcodes.io) API
+## Stack
 
-## How it works
+**Frontend:** React + TypeScript, Vite, Tailwind CSS v4, React Router, Zustand, Zod.
 
-- A customer goes to `/order`, picks a quantity and an optional personal message, then enters delivery details at `/checkout`.
-- On submit, the form is validated with Zod and the order is inserted into a Postgres `orders` table through the Supabase client SDK.
-- Data access is enforced at the database level with Row Level Security policies:
-  - Anyone can **insert** an order (place an order) — the public site never reads data back.
-  - Nobody can **read** orders unless they're signed in.
-- `/orders` is a protected admin view. Signing in at `/login` (Supabase Auth, email + password) is required to see the order list. There's no public sign-up — the one admin account is created directly in the Supabase dashboard.
+**Backend** (`server/`): Node.js + Express + TypeScript, PostgreSQL + Prisma, JWT auth
+(`bcryptjs` + `jsonwebtoken`), Zod validation, Vitest + Supertest. Written from scratch — no
+backend-as-a-service.
 
-## Architecture
+See [TUTORIAL.md](TUTORIAL.md) for how the frontend was built and
+[TUTORIAL_BACKEND.md](TUTORIAL_BACKEND.md) for how the backend was built — both walk through the
+project step by step so you can rebuild it yourself.
 
+## Run it locally
+
+```bash
+# 1. Database (pick one)
+docker compose up -d                   # or: brew services start postgresql@16
+
+# 2. API
+cd server
+cp .env.example .env                   # then set a real JWT_SECRET (see TUTORIAL_BACKEND.md)
+npm install
+npx prisma migrate dev --name init
+npm run dev                            # http://localhost:4000
+
+# 3. Frontend (new terminal, repo root)
+cp .env.example .env
+npm install
+npm run dev                            # http://localhost:5173
 ```
-React (Vite)  ──▶  Supabase client SDK  ──▶  Supabase
-                                              ├─ Postgres (orders table)
-                                              ├─ Auto-generated REST API (PostgREST)
-                                              ├─ Auth (email/password)
-                                              └─ Row Level Security policies
+
+## Test
+
+```bash
+cd server && npm run test
 ```
-
-## Running it locally
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Create a free [Supabase](https://supabase.com) project.
-3. In the Supabase SQL Editor, run [`supabase/schema.sql`](supabase/schema.sql) to create the `orders` table and its security policies.
-4. Create your admin login under **Authentication → Users → Add user** (this is what you'll use to sign into `/orders`).
-5. Copy `.env.example` to `.env.local` and fill in your project's values, found under **Project Settings → API**:
-   ```
-   VITE_SUPABASE_URL=
-   VITE_SUPABASE_ANON_KEY=
-   ```
-6. Start the dev server:
-   ```bash
-   npm run dev
-   ```
-
-## Notes
-
-This is a demo storefront — no real payments are processed.
