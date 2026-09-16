@@ -45,6 +45,47 @@ npm install
 npm run dev                            # http://localhost:5173
 ```
 
+### If you don't have Docker or Homebrew yet
+
+The `docker compose up -d` / `brew services start postgresql@16` step above assumes one of those
+is already on your machine. On a fresh Mac, neither is guaranteed to be. Pick one path:
+
+**Option A — install Docker Desktop**
+
+Download and install it from [docker.com](https://www.docker.com/products/docker-desktop/), open
+it once so the daemon starts, then run `docker compose up -d` as above. This is the simplest
+option since `docker-compose.yml` already has the right user/password/database configured.
+
+**Option B — install Homebrew, then Postgres**
+
+```bash
+# Install Homebrew (prompts for your Mac password — run this in your own terminal, not a script)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Add it to your PATH (the installer prints the exact line for your shell; for zsh on Apple
+# Silicon it's this — then restart your terminal or run the same line directly)
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Install and start Postgres
+brew install postgresql@16
+brew services start postgresql@16
+```
+
+The Homebrew installer clones a large repo over git — on a slow or restricted network it can
+stall. If it sits idle for a few minutes with no progress, `Ctrl+C` and re-run the same command;
+it resumes rather than starting over.
+
+Unlike Docker (whose `docker-compose.yml` creates the database automatically), a fresh Homebrew
+Postgres install is empty, so create the role and database the backend's `.env.example` expects:
+
+```bash
+psql postgres -c "CREATE ROLE giftbags WITH LOGIN PASSWORD 'giftbags' CREATEDB;"
+psql postgres -c "CREATE DATABASE giftbags OWNER giftbags;"
+```
+
+Then continue with step 2 (API) above as normal.
+
 ## Test
 
 ```bash
