@@ -88,6 +88,22 @@ Then continue with step 2 (API) above as normal.
 
 ## Test
 
+The test suite runs against a dedicated `giftbags_test` database (see `TEST_DATABASE_URL` in
+`server/.env`) so it never touches your dev data. That database isn't created automatically —
+do it once, then apply the Prisma migrations to it:
+
+```bash
+# One-time setup: create the test database and apply migrations to it
+psql postgres -c "CREATE DATABASE giftbags_test OWNER giftbags;"
+cd server
+DATABASE_URL="postgresql://giftbags:giftbags@localhost:5432/giftbags_test" npx prisma migrate deploy
+```
+
+Then run the tests as normal:
+
 ```bash
 cd server && npm run test
 ```
+
+If you see `Database "giftbags_test" does not exist`, it means the one-time setup above hasn't
+been run yet on this machine.

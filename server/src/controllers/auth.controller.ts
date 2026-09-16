@@ -27,6 +27,6 @@ export async function login(req: Request, res: Response) {
 export async function me(req: Request, res: Response) {
   if (!req.userId) throw new UnauthorizedError()
   const user = await getUserById(req.userId)
-  res.status(200).json({ ...user }) 
+  res.status(200).json({ user })
 }
 
