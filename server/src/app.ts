@@ -8,6 +8,9 @@ import { apiRouter } from './routes/index'
 export function createApp() {
   const app = express()
 
+  // Render/most hosts sit behind one proxy; needed so rate limiting sees the real client IP
+  app.set('trust proxy', 1)
+
   app.use(helmet())
   app.use(cors({ origin: env.CORS_ORIGIN }))
   app.use(express.json())
