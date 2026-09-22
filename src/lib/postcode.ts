@@ -1,9 +1,9 @@
-export interface PostcodeLookupResult {
+export type PostcodeLookupResult = {
   city: string
   region: string
 }
 
-interface PostcodesIoResponse {
+type PostcodesIoResponse = {
   status: number
   result: {
     admin_district: string | null

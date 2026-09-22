@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type ChangeEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ApiError } from '../lib/api'
 import { useAuthStore } from '../store/authStore'
@@ -13,12 +13,12 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  async function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: ChangeEvent) {
     event.preventDefault()
     setError(null)
     setSubmitting(true)
     try {
-      await login({ email, password })
+      await login({ email: email, password : password})
       const from = (location.state as { from?: string } | null)?.from ?? '/order'
       navigate(from)
     } catch (err) {
@@ -29,59 +29,33 @@ export function LoginPage() {
   }
 
   return (
-    <main className="mx-auto max-w-md px-6 py-16">
-      <h1 className="text-3xl font-semibold text-plum">Log in</h1>
-      <p className="mt-2 text-plum/60">Log in to place an order and see your order history.</p>
+      <main className="mx-auto max-w-md px-6 py-16">
+          <h1 className="text-3xl font-semibold text-plum">Log in</h1>
+          <p className="mt-2 text-plum/60">Log in to place an order and see your order history.</p>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-plum">
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-            className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-plum">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-            className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"
-          />
-        </div>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-plum">Email Address</label>
+              <input id="email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"></input>
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-plum">Password</label>
+              <input id="password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required className="mt-2 w-full rounded-xl border border-plum/20 bg-white p-3 text-sm text-plum focus:border-berry focus:outline-none"></input>
+            </div>
 
-        {error && (
-          <p role="alert" className="text-sm text-berry-dark">
-            {error}
+            {error && (
+              <p role="alert" className="text-sm text-berry-dark">{error}</p>
+            )}
+
+            <button type="submit" disabled={submitting} className="w-full rounded-full bg-berry px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-berry-dark disabled:opacity-60">
+              {submitting ? 'Logging In' : 'Log In'}
+            </button>
+          </form>
+
+          <p className="mt-6 text-sm text-plum/60">
+            No Account Yet?{' '}
+            <Link to="/register" className="font-medium text-berry hover:underline">Register</Link>
           </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded-full bg-berry px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-berry-dark disabled:opacity-60"
-        >
-          {submitting ? 'Logging in…' : 'Log in'}
-        </button>
-      </form>
-
-      <p className="mt-6 text-sm text-plum/60">
-        No account yet?{' '}
-        <Link to="/register" className="font-medium text-berry hover:underline">
-          Register
-        </Link>
-      </p>
-    </main>
+      </main>
   )
 }

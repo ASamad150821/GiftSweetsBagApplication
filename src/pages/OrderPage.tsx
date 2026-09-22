@@ -37,45 +37,16 @@ export function OrderPage() {
                 Quantity
               </label>
               <div className="mt-2 inline-flex items-center rounded-full border border-plum/20 bg-white">
-                <button
-                  type="button"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="h-10 w-10 rounded-full text-lg text-plum hover:bg-cream"
-                  aria-label="Decrease quantity"
-                >
-                  −
-                </button>
-                <span id="quantity" className="w-10 text-center font-medium" aria-live="polite">
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                  className="h-10 w-10 rounded-full text-lg text-plum hover:bg-cream"
-                  aria-label="Increase quantity"
-                >
-                  +
-                </button>
+                <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="h-10 w-10 rounded-full text-lg text-plum hover:bg-cream" aria-label="Decrease quantity">−</button>
+                <span id="quantity" className="w-10 text-center font-medium" aria-live="polite">{quantity}</span>
+                <button type="button" onClick={() => setQuantity(Math.min(10, quantity + 1))} className="h-10 w-10 rounded-full text-lg text-plum hover:bg-cream" aria-label="Increase quantity">+</button>
               </div>
-            </div>
+          </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-plum">
-                Kind message for the label
-              </label>
-              <textarea
-                id="message"
-                value={personalMessage}
-                onChange={(event) =>
-                  setPersonalMessage(event.target.value.slice(0, MAX_MESSAGE_LENGTH))
-                }
-                placeholder="e.g. Thinking of you and hoping today is a little sweeter!"
-                rows={3}
-                className="mt-2 w-full rounded-2xl border border-plum/20 bg-white p-3 text-sm text-plum placeholder:text-plum/40 focus:border-berry focus:outline-none"
-              />
-              <p className="mt-1 text-right text-xs text-plum/40">
-                {personalMessage.length}/{MAX_MESSAGE_LENGTH}
-              </p>
+              <label htmlFor="message" className="block text-sm font-medium text-plum">Kind Message For The Label</label>
+              <textarea id="message" value={personalMessage} onChange={(event) => setPersonalMessage(event.target.value.slice(0, MAX_MESSAGE_LENGTH))} placeholder="e.g. Thinking of you and hoping today is a little sweeter!" className="mt-2 w-full rounded-2xl border border-plum/20 bg-white p-3 text-sm text-plum placeholder:text-plum/40 focus:border-berry focus:outline-none"></textarea>
+              <p className="mt-1 text-right text-xs text-plum/40">{personalMessage.length}/{MAX_MESSAGE_LENGTH}</p>
             </div>
 
             <button

@@ -17,24 +17,24 @@ function App() {
         <Header />
         <div className="flex-1">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/order" element={<OrderPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/" element={<HomePage></HomePage>} />
+            <Route path="/order" element={<OrderPage></OrderPage>} />
+            <Route path="/login" element={<LoginPage></LoginPage>} />
+            <Route path="/register" element={<RegisterPage></RegisterPage>} />
             <Route
               path="/checkout"
               element={
                 <ProtectedRoute>
-                  <CheckoutPage />
+                  <CheckoutPage></CheckoutPage>
                 </ProtectedRoute>
               }
             />
-            <Route path="/confirmation" element={<ConfirmationPage />} />
+            <Route path="/confirmation" element={<ConfirmationPage></ConfirmationPage>} />
             <Route
               path="/orders"
               element={
                 <ProtectedRoute>
-                  <OrdersHistoryPage />
+                  <OrdersHistoryPage></OrdersHistoryPage>
                 </ProtectedRoute>
               }
             />

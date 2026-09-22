@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export interface CustomerDetails {
+export type CustomerDetails =  {
   name: string
   email: string
   address: string
@@ -8,7 +8,15 @@ export interface CustomerDetails {
   postcode: string
 }
 
-export interface PlacedOrder {
+const emptyCustomer: CustomerDetails = {
+  name: '',
+  email: '',
+  address: '',
+  city: '',
+  postcode: '',
+}
+
+export type PlacedOrder = {
   id: string
   orderNumber: string
   quantity: number
@@ -18,7 +26,9 @@ export interface PlacedOrder {
   createdAt: string
 }
 
-interface OrderState {
+export const PRICE_PER_BAG = 6.5;
+
+type OrderState = {
   quantity: number
   personalMessage: string
   customer: CustomerDetails
@@ -30,25 +40,15 @@ interface OrderState {
   reset: () => void
 }
 
-const emptyCustomer: CustomerDetails = {
-  name: '',
-  email: '',
-  address: '',
-  city: '',
-  postcode: '',
-}
-
-export const PRICE_PER_BAG = 6.5
-
 export const useOrderStore = create<OrderState>((set) => ({
   quantity: 1,
   personalMessage: '',
   customer: emptyCustomer,
   lastOrder: null,
-  setQuantity: (quantity) => set({ quantity }),
-  setPersonalMessage: (personalMessage) => set({ personalMessage }),
-  setCustomer: (customer) => set({ customer }),
-  setLastOrder: (lastOrder) => set({ lastOrder }),
+  setQuantity: (quantity) => set({ quantity: quantity }),
+  setPersonalMessage: (personalMessage) => set({ personalMessage : personalMessage }),
+  setCustomer: (customer) => set({ customer : customer }),
+  setLastOrder: (lastOrder) => set({ lastOrder : lastOrder }),
   reset: () =>
     set({
       quantity: 1,

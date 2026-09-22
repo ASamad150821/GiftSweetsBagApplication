@@ -42,8 +42,6 @@ function formatOrder(order: {
 export async function createOrder(userId: string, input: CreateOrderInput) {
   const totalPrice = Number((input.quantity * PRICE_PER_BAG).toFixed(2))
 
-  // Order numbers are random, so a collision is possible (if unlikely) — retry a few
-  // times on the DB's unique-constraint violation rather than trusting randomness alone.
   for (let attempt = 0; attempt < MAX_ORDER_NUMBER_ATTEMPTS; attempt++) {
     try {
       const order = await prisma.order.create({

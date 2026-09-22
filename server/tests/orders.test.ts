@@ -72,7 +72,7 @@ describe('GET /api/orders', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({ ...validOrder, quantity: 1 })
 
-    const res = await request(app).get('/api/orders').set('Authorization', `Bearer ${token}`)
+    const res = await request(app).get('/api/orders/').set('Authorization', `Bearer ${token}`)
 
     expect(res.status).toBe(200)
     expect(res.body.orders).toHaveLength(2)
