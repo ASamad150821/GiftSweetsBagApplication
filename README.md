@@ -3,6 +3,11 @@
 A storefront for a single product: the Sweet Surprise Gift Bag — a bag filled with a random
 assortment of sweets, finished with a personalised kind-message label.
 
+**Live demo:** https://gift-sweets-bag-application.vercel.app
+
+Frontend on Vercel, API on Render, Postgres on Neon. The API runs on a free instance that sleeps
+when idle, so the first request after a quiet spell can take up to a minute.
+
 ## The user journey
 
 1. **Register / log in** — an account is required to place an order
